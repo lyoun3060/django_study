@@ -23,7 +23,7 @@ class Board(models.Model):
 class Comment(models.Model):
     cno=models.AutoField(primary_key=True)
     bno=models.IntegerField(null=False)
-    wiriter=models.CharField(null=False, max_length=50)
+    writer=models.CharField(null=False, max_length=50)
     content=models.TextField(null=False)
     post_date=models.DateTimeField(default=datetime.now, blank=True)
     

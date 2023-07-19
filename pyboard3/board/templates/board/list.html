@@ -8,6 +8,45 @@
 <body>
 	<h2>게시판</h2>
 	<h3>게시물 갯수 : {{boardCount}} <a href="/register">글등록</a></h3>
+	{{search_option}}
+	<form method="post">
+	{% csrf_token %}
+	<select name="search_option">
+		{% if search_option == "w" %}
+		<option value="">선택하세용</option>
+		<option value="w" selected>writer</option>
+		<option value="t">title</option>
+		<option value="c">content</option>
+		<option value="all">writer+title+content</option>
+		{% elif search_option == "t" %}
+		<option value="">선택하세용</option>
+		<option value="w">writer</option>
+		<option value="t" selected>title</option>
+		<option value="c">content</option>
+		<option value="all">writer+title+content</option>
+		{% elif search_option == "c" %}
+		<option value="">선택하세용</option>
+		<option value="w">writer</option>
+		<option value="t">title</option>
+		<option value="c" selected>content</option>
+		<option value="all">writer+title+content</option>
+		{% elif search_option == "all" %}
+		<option value="">선택하세용</option>
+		<option value="w">writer</option>
+		<option value="t">title</option>
+		<option value="c">content</option>
+		<option value="all" selected>writer+title+content</option>
+		{% else %}
+		<option value="" selected>선택하세용</option>
+		<option value="w">writer</option>
+		<option value="t">title</option>
+		<option value="c" >content</option>
+		<option value="all">writer+title+content</option>
+		{% endif %}
+	</select>
+	<input type="text" name="search" value="{{search}}">
+	<input type="submit" value="검색">
+	</form>
 	<table border=1>
 		<tr>
 			<th>번호</th>
@@ -34,6 +73,25 @@
 			<td>{{board.down}}
 		</tr>
 		{% endfor %}
+		<tr>
+			<td colspan="7" align="center">
+				{% if start_page >= block_size %}
+					<a href="/list?start={{prev_list}}">[이전]</a>
+				{% endif %}
+				
+				{% autoescape off %}
+				
+				{% for link in links %}
+					{{link}}
+				{% endfor %}
+				
+				{% endautoescape %}
+				
+				{% if end_page < total_page %}
+					<a href="/list?start={{next_list}}">[다음]</a>
+				{% endif %}
+			</td>
+		</tr>		
 	</table>
 </body>
 </html>
