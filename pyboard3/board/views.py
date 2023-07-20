@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from board.models import Board, Comment
-from django.template.context_processors import csrf, request
+from board.models import Board, Comment, Book
+from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 import os, math
 from urllib.parse import quote
@@ -12,6 +12,8 @@ from pip._internal import req
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from board import bigdataPro
+
 
 # Create your views here.
 UPLOAD_DIR='c:/ksj/upload/'
@@ -265,8 +267,31 @@ def logout(request):
         return redirect("/")
     return render(request, 'user/login.html')
 
+# CCTV가져오기
+
+def cctv_map(request):
+    bigdataPro.cctv_map()
+    return render(request, 'map/map01.html')
 
 
+#웹 그롤링
+def webcraw(request):
+    data = []
+    bigdataPro.web_craw(data)
     
+    for book in data:
+        dto = Book(title = book[0], author = book[1], price = book[2], point = book[3])
+        dto.save()
+        
+    return redirect("/")
+
+#그래프 그리기ㅇ
+def chart(request):
+    data=Book.objects.all().values_list('title','point')
+    print(data)
+    bigdataPro.makeChart(data)
+    return render(request, 'bigdata/chart.html', {'data':data})
+
+
     
     

@@ -26,4 +26,10 @@ class Comment(models.Model):
     writer=models.CharField(null=False, max_length=50)
     content=models.TextField(null=False)
     post_date=models.DateTimeField(default=datetime.now, blank=True)
-    
+
+class Book(models.Model):
+    bno = models.AutoField(primary_key=True)
+    title = models.CharField(max_length = 250)
+    author = models.CharField(max_length = 500)
+    price = models.IntegerField(default=0)
+    point = models.FloatField(default=0.0)

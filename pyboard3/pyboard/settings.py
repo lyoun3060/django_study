@@ -15,8 +15,8 @@ ko_formats.DATETIME_FORMAT='Y-m-d G:i:s'
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+BASE_DIR = Path(__file__).resolve().parent.parent #현재 이 프로젝트(pyboard)의 절대경로
+TEMPLATES_DIR = os.path.join(BASE_DIR,'board/templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -123,7 +123,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "/board/static/"
+STATIC_URL = "/board/static/" #<-웹에서 static을 쓰는경우
+STATIC_DIR=os.path.join(BASE_DIR, 'board/static') #<-모듈에서 static을 쓰는경우
+STATICFILE_DIR=[STATIC_DIR]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

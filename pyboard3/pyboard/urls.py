@@ -34,4 +34,7 @@ urlpatterns = [
     path("signup_form/", views.signup_form),
     path("signup/", views.signup),
     path("", views.home),
+    path("cctv_map/", views.cctv_map),
+    path("webcraw/", views.webcraw),
+    path("chart/", views.chart),
 ]
