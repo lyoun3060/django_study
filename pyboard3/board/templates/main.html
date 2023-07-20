@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>빅데이터 처리</h2>
+	
+	{% if request.user.is_authenticated %}
+		<h3><a href="/logout">{{user.username}}</a></h3>
+	{% else %}
+		<h3><a href="/login">로그인</a></h3>
+	{% endif %}
+	
+	<h3><a href="/list">게시판</a></h3>
+</body>
+</html>

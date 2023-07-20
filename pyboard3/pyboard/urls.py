@@ -28,4 +28,10 @@ urlpatterns = [
     path("update/", views.update),
     path("delete/", views.delete),
     path("reply_insert/", views.reply_insert),
+    path("login/", views.login),
+    path("login_form/", views.login),
+    path("logout/", views.logout),
+    path("signup_form/", views.signup_form),
+    path("signup/", views.signup),
+    path("", views.home),
 ]

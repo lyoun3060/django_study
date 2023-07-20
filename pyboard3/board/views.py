@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from board.models import Board, Comment
-from django.template.context_processors import csrf
+from django.template.context_processors import csrf, request
 from django.views.decorators.csrf import csrf_exempt
 import os, math
 from urllib.parse import quote
@@ -8,9 +8,17 @@ from django.http.response import HttpResponse
 from django.http import response
 import chunk
 from django.db.models import Q
+from pip._internal import req
+from django.contrib.auth.models import User
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 UPLOAD_DIR='c:/ksj/upload/'
+
+#홈화면 가는것
+def home(request):
+    return render(request, 'main.html') 
 
 
 # 리스트 출력하는법(1)
@@ -116,6 +124,7 @@ def list(request):
     
     
 
+@login_required #<-로그인한 사용자만 글쓰게 하려고 하는경우
 def register(request):
     return render(request, 'board/register.html')
 
@@ -212,7 +221,52 @@ def reply_insert(request):
     dto.save()
     return redirect("/detail?bno="+no)
     
-    
+
+#회원가입
+
+def signup_form(request):
+    return render(request, 'user/signup.html')
+
+@csrf_exempt
+def signup(request):
+    if request.method=='POST':
+        if request.POST['password']==request.POST['password2']:
+            username=request.POST['username']
+            password=request.POST['password']
+            email=request.POST['email']
+            user=User.objects.create_user(username, email, password)
+        return redirect('/login_form')
+    return render(request, 'user/signup.html')
+
+
+
+def login_form(request):
+    return render(request, 'user/login.html')
+
+@csrf_exempt
+def login(request):
+    if request.method=="POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user=auth.authenticate(request, username=username, password=password)
+        
+        if user is not None :
+            auth.login(request, user)    
+            return redirect("/") #<-첫번째 홈페이지로 로그인되서 돌아가게 함
+        else:
+            return render(request, 'user/login.html', {'error':'username/password is incorrect'})
+        
+    else:
+        return render(request, 'user/login.html')
+
+def logout(request):
+    if request.user.is_authenticated:
+        return redirect("/")
+    return render(request, 'user/login.html')
+
+
+
     
     
     
